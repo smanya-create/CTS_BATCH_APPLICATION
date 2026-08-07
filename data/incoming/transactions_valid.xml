@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bulkTransactions batchId="BATCH-20260805-001" corporateId="CORP101" createdDate="2026-08-05">
+    <transaction>
+        <transactionId>TXN1001</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>200001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>15000.00</amount>
+        <transactionDate>2026-08-05</transactionDate>
+        <remarks>Vendor payment</remarks>
+    </transaction>
+    <transaction>
+        <transactionId>TXN1002</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>300001</toAccount>
+        <type>SALARY_CREDIT</type>
+        <amount>45000.00</amount>
+        <transactionDate>2026-08-05</transactionDate>
+        <remarks>August salary</remarks>
+    </transaction>
+    <transaction>
+        <transactionId>TXN1003</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>400001</toAccount>
+        <type>UTILITY_PAYMENT</type>
+        <amount>2500.00</amount>
+        <transactionDate>2026-08-05</transactionDate>
+        <remarks>Electricity bill</remarks>
+    </transaction>
+</bulkTransactions>
