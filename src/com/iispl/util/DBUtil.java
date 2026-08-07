@@ -21,9 +21,9 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 
-        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/cts_db");
+        dataSource.setJdbcUrl("jdbc:postgresql://db.ayvwhbzafhkaycsckztc.supabase.co:5432/postgres?sslmode=require");
         dataSource.setUser("postgres");
-        dataSource.setPassword("postgres");
+        dataSource.setPassword("Imageinfo@123");
 
         // Pool Configuration
         dataSource.setInitialPoolSize(5);
