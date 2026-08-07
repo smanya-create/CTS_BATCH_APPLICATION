@@ -1,0 +1,9 @@
+incoming.directory=cts-data/incoming
+processing.directory=cts-data/processing
+output.directory=cts-data/output
+archive.directory=cts-data/archive
+rejected.directory=cts-data/rejected
+
+database.url=jdbc:postgresql://localhost:5432/ctsdb
+database.username=postgres
+database.password=change_me
