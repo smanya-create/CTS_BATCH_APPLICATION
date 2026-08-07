@@ -1,35 +1,44 @@
 package com.iispl.util;
 
+
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
 public class DBUtil {
-	private static final String URL =
-            "jdbc:postgresql://localhost:5432/cts_db";
+	private static ComboPooledDataSource dataSource;
 
-    private static final String USER =
-            "postgres";
+    static {
 
-    private static final String PASSWORD =
-            "postgres";
+        dataSource = new ComboPooledDataSource();
 
+        try {
+            dataSource.setDriverClass("org.postgresql.Driver");
+        } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/cts_db");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("postgres");
+
+        // Pool Configuration
+        dataSource.setInitialPoolSize(5);
+        dataSource.setMinPoolSize(2);
+        dataSource.setMaxPoolSize(10);
+        dataSource.setAcquireIncrement(2);
+
+    }
 
     public static Connection getConnection() throws SQLException {
 
-
-    	 try {
-             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-             System.out.println("Database Connected Successfully");
-             return con;
-
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
-
-         return null;
+        return dataSource.getConnection();
+    }
 
     }
 	
 
-}
+
