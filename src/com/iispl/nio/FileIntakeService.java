@@ -1,5 +1,5 @@
 package com.iispl.nio;
 
-public class FileIntakeNio {
+public class FileIntakeService {
 
 }
