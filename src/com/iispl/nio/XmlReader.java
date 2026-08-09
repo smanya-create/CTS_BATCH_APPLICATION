@@ -115,7 +115,8 @@ public class XmlReader {
                                {
                             	   String transactionId=request.getTransactionId();
                             	   TransactionStatus transacrionStatus=TransactionStatus.FAILED;
-                            	   String failureCode="";
+                            	   String failureCode=(e instanceof InvalidTransactionException)?"TXN-401 :TRANSACTION_PROBLEM"
+                            			   : "XML-402 :XML_STRUCTURE_PROBLEM";
                             	   String failureReason=e.getMessage();
                                	
                             	   failureTransactionList.add(new TransactionResult(transactionId, transacrionStatus, failureCode, failureReason));
