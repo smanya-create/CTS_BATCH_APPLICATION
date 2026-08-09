@@ -25,12 +25,12 @@ public class TransactionServiceImpl implements TransactionService {
 	    }
 
 	
-	
+	    static List<TransactionResult> results=null;
 
 	@Override
 	public List<TransactionResult> processTransactions(Connection connection, List<TransactionRequest> requests) {
 		// TODO Auto-generated method stub
-		 List<TransactionResult> results = new ArrayList<>();
+		  results = new ArrayList<>();
 		for(TransactionRequest request : requests) {
 
 		    TransactionResult result;
@@ -216,6 +216,9 @@ public class TransactionServiceImpl implements TransactionService {
 
 		}
 		return null;
+	}
+	public static List<TransactionResult> getTransactionResultList(){
+		return results;
 	}
 
 }
