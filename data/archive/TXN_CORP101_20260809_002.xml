@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<transactions corporateId="CORP101">
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN011</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>200001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>5000.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN012</transactionId>
+        <fromAccount>200001</fromAccount>
+        <toAccount>300001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>3000.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN013</transactionId>
+        <fromAccount>300001</fromAccount>
+        <toAccount>400001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>2500.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN014</transactionId>
+        <fromAccount>400001</fromAccount>
+        <toAccount>100001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>1500.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN015</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>300001</toAccount>
+        <type>SALARY_CREDIT</type>
+        <amount>4000.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN016</transactionId>
+        <fromAccount>200001</fromAccount>
+        <toAccount>400001</toAccount>
+        <type>VENDOR_PAYMENT</type>
+        <amount>2000.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN017</transactionId>
+        <fromAccount>300001</fromAccount>
+        <toAccount>100001</toAccount>
+        <type>UTILITY_PAYMENT</type>
+        <amount>1000.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Valid -->
+    <transaction>
+        <transactionId>TXN018</transactionId>
+        <fromAccount>400001</fromAccount>
+        <toAccount>200001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>3500.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Duplicate: TXN001 already exists in database -->
+    <transaction>
+        <transactionId>TXN001</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>200001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>1000.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+    <!-- Invalid: negative amount -->
+    <transaction>
+        <transactionId>TXN019</transactionId>
+        <fromAccount>100001</fromAccount>
+        <toAccount>200001</toAccount>
+        <type>FUND_TRANSFER</type>
+        <amount>-500.00</amount>
+        <transactionDate>2026-08-09</transactionDate>
+    </transaction>
+
+</transactions>

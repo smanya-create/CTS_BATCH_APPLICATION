@@ -84,36 +84,46 @@ public class ResponseFileWriter {
     
     
     
-    public Path writeSummary(  Path outputDirectory, String originalFileName) throws ResponseGenerationException {
-    	int total = transactionResultList.size();
-    	int successful = 0;
-    	int failed = 0;
+    public Path writeSummary(
+            Path outputDirectory,
+            String originalFileName,
+            List<TransactionResult> results)
+            throws ResponseGenerationException {
 
-    	for (TransactionResult result :transactionResultList) {
+        int total = results.size();
 
-    	    if ("SUCCESS".equals(result.getStatus())) {
-    	        successful++;
-    	    } else {
-    	        failed++;
-    	    }
-    	}
+        int successful = 0;
+        int failed = 0;
 
+        for (TransactionResult result : results) {
+
+            if ("SUCCESS".equals(result.getStatus())) {
+
+                successful++;
+
+            } else {
+
+                failed++;
+            }
+        }
 
         try {
 
             Files.createDirectories(outputDirectory);
 
             String summaryFileName =
-                    "SUMMARY_" +
-                    originalFileName.replace(".xml", ".txt");
+                    "SUMMARY_"
+                    + originalFileName.replace(".xml", ".txt");
 
             Path summaryPath =
                     outputDirectory.resolve(summaryFileName);
 
             String summary =
+                    "File Name: " + originalFileName + "\n" +
                     "Total Transactions: " + total + "\n" +
                     "Successful Transactions: " + successful + "\n" +
-                    "Failed Transactions: " + failed + "\n";
+                    "Failed Transactions: " + failed + "\n" +
+                    "Processing Status: COMPLETED\n";
 
             Files.writeString(
                     summaryPath,
@@ -122,6 +132,7 @@ public class ResponseFileWriter {
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
             );
+
             return summaryPath;
 
         } catch (IOException e) {

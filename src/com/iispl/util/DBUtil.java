@@ -6,38 +6,38 @@ import java.sql.Connection;
 
 import java.sql.SQLException;
 
-//import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class DBUtil {
-//	private static ComboPooledDataSource dataSource;
-//
-//    static {
-//
-//        dataSource = new ComboPooledDataSource();
-//
-//        try {
-//            dataSource.setDriverClass("org.postgresql.Driver");
-//        } catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//        dataSource.setJdbcUrl("jdbc:postgresql://db.ayvwhbzafhkaycsckztc.supabase.co:5432/postgres?sslmode=require");
-//        dataSource.setUser("postgres");
-//        dataSource.setPassword("Imageinfo@123");
-//
-//        // Pool Configuration
-//        dataSource.setInitialPoolSize(5);
-//        dataSource.setMinPoolSize(2);
-//        dataSource.setMaxPoolSize(10);
-//        dataSource.setAcquireIncrement(2);
-//
-//    }
-//
-//    public static Connection getConnection() throws SQLException {
-//
-//        return dataSource.getConnection();
-//    }
+	private static ComboPooledDataSource dataSource;
+
+    static {
+
+        dataSource = new ComboPooledDataSource();
+
+        try {
+            dataSource.setDriverClass("org.postgresql.Driver");
+        } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        dataSource.setJdbcUrl("jdbc:postgresql://db.ayvwhbzafhkaycsckztc.supabase.co:5432/postgres?sslmode=require");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("Imageinfo@123");
+
+        // Pool Configuration
+        dataSource.setInitialPoolSize(5);
+        dataSource.setMinPoolSize(2);
+        dataSource.setMaxPoolSize(10);
+        dataSource.setAcquireIncrement(2);
+
+    }
+
+    public static Connection getConnection() throws SQLException {
+
+        return dataSource.getConnection();
+    }
 
     }
 	

@@ -245,28 +245,26 @@ public class XmlReader {
         }
         
         //  Validate Transaction Type
-        String type =request.getTransactionType().toString();
+        TransactionType type = request.getTransactionType();
+
         if (type == null) {
 
-            throw new InvalidTransactionException("Transaction type cannot be null for "+ transactionId);
-        }
-        
-        if (!type.equals(TransactionType.FUND_TRANSFER) && !type.equals(TransactionType.SALARY_CREDIT) &&
-        		!type.equals(TransactionType.UTILITY_PAYMENT) && !type.equals(TransactionType.VENDOR_PAYMENT)) {
-
-            throw new InvalidTransactionException("Invalid transaction type: "+ " for "+ transactionId);
+            throw new InvalidTransactionException(
+                    "Transaction type cannot be null for " + transactionId);
         }
 
         //  Validate Amount
         BigDecimal amount = request.getAmount();
         if (amount == null) {
 
-            throw new Exception("Amount cannot be null for "+ transactionId);
+        	throw new InvalidTransactionException(
+        	        "Amount cannot be null for " + transactionId);
         }
 
         if (amount.compareTo( BigDecimal.ZERO) <= 0) {
 
-            throw new Exception("Amount must be greater than zero for " + transactionId);
+        	throw new InvalidTransactionException(
+        	        "Amount must be greater than zero for " + transactionId);
         }
         
         //  Validate Transaction Date
@@ -274,7 +272,8 @@ public class XmlReader {
 
         if (transactionDate == null) {
 
-            throw new Exception( "Transaction date cannot be null for " + transactionId);
+        	throw new InvalidTransactionException(
+        	        "Transaction date cannot be null for " + transactionId);
         }
     }
 }

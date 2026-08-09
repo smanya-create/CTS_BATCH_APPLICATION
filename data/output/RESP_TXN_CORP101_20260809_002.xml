@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Transaction>
+        <transactionId>TXN019</transactionId>
+        <status>FAILED</status>
+        <failureCode></failureCode>
+        <failureReason>Amount must be greater than zero for TXN019</failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN011</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN012</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN013</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN014</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN015</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN016</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN017</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN018</transactionId>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
+    </Transaction>
+    <Transaction>
+        <transactionId>TXN001</transactionId>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
+    </Transaction>
+</Response>

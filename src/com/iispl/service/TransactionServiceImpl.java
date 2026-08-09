@@ -215,7 +215,7 @@ public class TransactionServiceImpl implements TransactionService {
 		    }
 
 		}
-		return null;
+		return results;
 	}
 	public static List<TransactionResult> getTransactionResultList(){
 		return results;
