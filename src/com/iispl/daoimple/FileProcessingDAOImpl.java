@@ -26,8 +26,9 @@ public class FileProcessingDAOImpl implements FileDaoProcessing {
                 connection.prepareStatement(INSERT_SUMMARY)) {
 
 
-            // temporary batch id
-            ps.setString(1, "BATCH001");
+        	String batchId = "BATCH_" + System.currentTimeMillis();
+
+        	ps.setString(1, batchId);
 
 
             ps.setString(2,

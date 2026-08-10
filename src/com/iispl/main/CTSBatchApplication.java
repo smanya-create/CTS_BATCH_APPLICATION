@@ -5,13 +5,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.iispl.dao.AccountDao;
 import com.iispl.dao.TransactionDao;
 import com.iispl.daoimple.AccountDAOImpl;
+import com.iispl.daoimple.FileProcessingDAOImpl;
 import com.iispl.daoimple.TransactionDAOImpl;
+import com.iispl.enums.TransactionStatus;
+import com.iispl.model.FileProcessingSummary;
 import com.iispl.model.TransactionRequest;
 import com.iispl.model.TransactionResult;
 import com.iispl.nio.FileIntakeService;
@@ -157,7 +161,7 @@ public class CTSBatchApplication {
             for (TransactionResult result :   allResults) 
                  {
 
-                if ("SUCCESS".equals(result.getStatus()))
+                if (result.getStatus()==TransactionStatus.SUCCESS)
                          {
                     successful++;
 
@@ -185,6 +189,40 @@ public class CTSBatchApplication {
 
             System.out.println(
                     "Processing Status      : COMPLETED");
+            FileProcessingSummary fileSummary =
+                    new FileProcessingSummary(
+                            originalFileName,
+                            total,
+                            successful,
+                            failed,
+                            LocalDateTime.now(),
+                            "COMPLETED"
+                    );
+
+            FileProcessingDAOImpl fileProcessingDAO =
+                    new FileProcessingDAOImpl();
+
+            boolean summarySaved =
+                    fileProcessingDAO.saveSummary(
+                            connection,
+                            fileSummary
+                    );
+
+            System.out.println(
+                    "File processing summary saved to database: "
+                    + summarySaved
+            );
+
+
+            // Commit the summary INSERT
+            if (summarySaved) {
+                connection.commit();
+                System.out.println("Summary database transaction committed.");
+            } else {
+                connection.rollback();
+                System.out.println("Summary database transaction rolled back.");
+            }
+
 
 
     

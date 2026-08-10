@@ -1,0 +1,5 @@
+File Name: TXN_CORP101_20260810_003.xml
+Total Transactions: 10
+Successful Transactions: 9
+Failed Transactions: 1
+Processing Status: COMPLETED

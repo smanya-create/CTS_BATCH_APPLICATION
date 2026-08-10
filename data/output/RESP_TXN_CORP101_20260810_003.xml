@@ -3,7 +3,7 @@
     <Transaction>
         <transactionId>TXN019</transactionId>
         <status>FAILED</status>
-        <failureCode>TXN001-Transaction Problem</failureCode>
+        <failureCode>TXN-401 :TRANSACTION_PROBLEM</failureCode>
         <failureReason>Amount must be greater than zero for TXN019</failureReason>
     </Transaction>
     <Transaction>
@@ -56,8 +56,8 @@
     </Transaction>
     <Transaction>
         <transactionId>TXN001</transactionId>
-        <status>FAILED</status>
-        <failureCode>DUPLICATE</failureCode>
-        <failureReason>Duplicate transaction ID</failureReason>
+        <status>SUCCESS</status>
+        <failureCode></failureCode>
+        <failureReason></failureReason>
     </Transaction>
 </Response>

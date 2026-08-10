@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+import com.iispl.enums.TransactionStatus;
 import com.iispl.exception.ResponseGenerationException;
 import com.iispl.model.TransactionResult;
 import com.iispl.service.TransactionServiceImpl;
@@ -90,7 +91,7 @@ public class ResponseFileWriter {
 				        "]"
 				    );
 
-			if ("SUCCESS".equals(result.getStatus())) {
+			if (result.getStatus()==TransactionStatus.SUCCESS) {
 
 				successful++;
 
