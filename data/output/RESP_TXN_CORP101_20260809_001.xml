@@ -2,62 +2,62 @@
 <Response>
     <Transaction>
         <transactionId>TXN001</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN002</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN003</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN004</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN005</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN006</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN007</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN008</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN009</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
     <Transaction>
         <transactionId>TXN010</transactionId>
-        <status>SUCCESS</status>
-        <failureCode></failureCode>
-        <failureReason></failureReason>
+        <status>FAILED</status>
+        <failureCode>DUPLICATE</failureCode>
+        <failureReason>Duplicate transaction ID</failureReason>
     </Transaction>
 </Response>

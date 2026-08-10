@@ -154,9 +154,6 @@ public class CTSBatchApplication {
             int total =allResults.size();
             int successful = 0;
             int failed = 0;
-                    
-            
-
             for (TransactionResult result :   allResults) 
                  {
 
@@ -194,11 +191,19 @@ public class CTSBatchApplication {
             // SUMMARY FILE
             // =====================================================
 
-            Path summaryFile =responseWriter.writeSummary(outputDirectory,
+//            Path summaryFile =responseWriter.writeSummary(outputDirectory,
+//                    originalFileName,
+//                    allResults);
+//            System.out.println(
+//                    "Summary file created: " + summaryFile );
+            Path summaryFile = responseWriter.writeSummary(
+                    outputDirectory,
                     originalFileName,
-                    allResults);
-            System.out.println(
-                    "Summary file created: " + summaryFile );
+                    allResults
+            );
+
+            System.out.println("Summary file created: " + summaryFile);
+            System.out.println(Files.readString(summaryFile));
             connection.close();
 
 

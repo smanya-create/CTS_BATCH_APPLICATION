@@ -82,6 +82,13 @@ public class ResponseFileWriter {
 		int failed = 0;
 
 		for (TransactionResult result : results) {
+			 System.out.println(
+				        "SUMMARY CHECK: " +
+				        result.getTransactionId() +
+				        " -> [" +
+				        result.getStatus() +
+				        "]"
+				    );
 
 			if ("SUCCESS".equals(result.getStatus())) {
 
@@ -91,6 +98,7 @@ public class ResponseFileWriter {
 
 				failed++;
 			}
+			
 		}
 
 		try {
@@ -99,11 +107,7 @@ public class ResponseFileWriter {
 
 			String summaryFileName ="SUMMARY_"+ originalFileName.replace(".xml", ".txt");
 					
-							
-
-			Path summaryPath =
-					outputDirectory.resolve(summaryFileName);
-
+			Path summaryPath =outputDirectory.resolve(summaryFileName);
 			String summary =
 					"File Name: " + originalFileName + "\n" +
 							"Total Transactions: " + total + "\n" +
