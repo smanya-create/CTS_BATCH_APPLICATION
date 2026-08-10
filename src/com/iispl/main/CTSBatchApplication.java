@@ -187,15 +187,7 @@ public class CTSBatchApplication {
                     "Processing Status      : COMPLETED");
 
 
-            // =====================================================
-            // SUMMARY FILE
-            // =====================================================
-
-//            Path summaryFile =responseWriter.writeSummary(outputDirectory,
-//                    originalFileName,
-//                    allResults);
-//            System.out.println(
-//                    "Summary file created: " + summaryFile );
+    
             Path summaryFile = responseWriter.writeSummary(
                     outputDirectory,
                     originalFileName,
