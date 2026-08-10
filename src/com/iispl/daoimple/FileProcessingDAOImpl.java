@@ -22,47 +22,19 @@ public class FileProcessingDAOImpl implements FileDaoProcessing {
                                FileProcessingSummary summary) {
 
 
-        try(PreparedStatement ps =
-                connection.prepareStatement(INSERT_SUMMARY)) {
-
-
+        try(PreparedStatement ps =connection.prepareStatement(INSERT_SUMMARY)) {
         	String batchId = "BATCH_" + System.currentTimeMillis();
-
         	ps.setString(1, batchId);
-
-
-            ps.setString(2,
-                    summary.getFileName());
-
-
-            ps.setInt(3,
-                    summary.getTotalTransactions());
-
-
-            ps.setInt(4,
-                    summary.getSuccessCount());
-
-
-            ps.setInt(5,
-                    summary.getFailureCount());
-
-
-            ps.setString(6,
-                    summary.getStatus());
-
-
+            ps.setString(2,summary.getFileName());
+            ps.setInt(3,summary.getTotalTransactions());
+            ps.setInt(4,summary.getSuccessCount());
+            ps.setInt(5,summary.getFailureCount());
+            ps.setString(6,summary.getStatus());
             int rows = ps.executeUpdate();
-
-
             return rows > 0;
-
-
         } catch(SQLException e) {
-
             e.printStackTrace();
-
         }
-
 
         return false;
 	}

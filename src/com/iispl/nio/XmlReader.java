@@ -189,10 +189,7 @@ String transactionDateText = transactionElement.getElementsByTagName("transactio
 .item(0).getTextContent();
 
 TransactionType type=TransactionType.valueOf(typeText);
-System.out.println(
-	    "DEBUG TYPE ENUM: " + transactionId +
-	    " = [" + type + "]"
-	);
+
 
 BigDecimal amount=new BigDecimal(amountText);
 
