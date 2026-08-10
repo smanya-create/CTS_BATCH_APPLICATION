@@ -21,23 +21,19 @@ public class TransactionDAOImpl implements TransactionDao {
 	@Override
 	public boolean transactionExists(Connection connection, String transactionId) {
 		// TODO Auto-generated method stub
-		 try (PreparedStatement ps =
-		            connection.prepareStatement(CHECK_TRANSACTION)) {
+		 try (PreparedStatement ps =connection.prepareStatement(CHECK_TRANSACTION)) {
 
 		        ps.setString(1, transactionId);
 
 		        ResultSet rs = ps.executeQuery();
-
 		        if (rs.next()) {
 
 		            return rs.getInt(1) > 0;
-
 		        }
 
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
-
 		    return false;
 	}
 
@@ -46,46 +42,17 @@ public class TransactionDAOImpl implements TransactionDao {
 		// TODO Auto-generated method stub
 		try (PreparedStatement ps =
 	            connection.prepareStatement(INSERT_TRANSACTION)) {
-
-
 	        ps.setString(1, request.getTransactionId());
-
-
-	        // temporary values
 	        ps.setString(2, "BATCH001");
-
-
 	        ps.setString(3, request.getFromAccount());
-
-
 	        ps.setString(4, request.getToAccount());
-
-
-	        ps.setString(5,
-	                request.getTransactionType().name());
-
-
-	        ps.setBigDecimal(6,
-	                request.getAmount());
-
-
-	        ps.setDate(7,
-	                java.sql.Date.valueOf(
-	                        request.getTransactionDate()));
-
-
-	        ps.setString(8,
-	                result.getStatus().name());
-
-
-	        ps.setString(9,
-	                result.getFailureReason());
-
-
+	        ps.setString(5,request.getTransactionType().name());
+	        ps.setBigDecimal(6,request.getAmount());
+	        ps.setDate(7,java.sql.Date.valueOf(request.getTransactionDate()));
+	        ps.setString(8,result.getStatus().name());
+	        ps.setString(9,result.getFailureReason());
 	        // temporary value
 	        ps.setString(10, "INPUT.xml");
-
-
 	        int rows = ps.executeUpdate();
 
 

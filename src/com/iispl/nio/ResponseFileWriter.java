@@ -13,152 +13,138 @@ import com.iispl.model.TransactionResult;
 import com.iispl.service.TransactionServiceImpl;
 public class ResponseFileWriter {
 	List<TransactionResult> transactionResultList=TransactionServiceImpl.getTransactionResultList(); 
-	
 
-    public Path writeResponse( Path outputDirectory,String originalFileName,List<TransactionResult> results) throws ResponseGenerationException {
+//String/XML → byte[] → ByteBuffer → FileChannel → File
+	public Path writeResponse( Path outputDirectory,String originalFileName,List<TransactionResult> results) throws ResponseGenerationException {
 
-        try {
-            Files.createDirectories(outputDirectory);
+		try {
+			Files.createDirectories(outputDirectory);
+			String responseFileName = "RESP_" + originalFileName;
+			Path responsePath =outputDirectory.resolve(responseFileName);
+			StringBuilder xml = new StringBuilder();
+			xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			xml.append("<Response>\n");
+			for (TransactionResult result : results) {
 
-            String responseFileName = "RESP_" + originalFileName;
+				xml.append("    <Transaction>\n");
 
-            Path responsePath =
-                    outputDirectory.resolve(responseFileName);
+				xml.append("        <transactionId>")
+				.append(result.getTransactionId())
+				.append("</transactionId>\n");
 
-            StringBuilder xml = new StringBuilder();
+				xml.append("        <status>")
+				.append(result.getStatus())
+				.append("</status>\n");
 
-            xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            xml.append("<Response>\n");
+				xml.append("        <failureCode>")
+				.append(result.getFailureCode() == null
+				? ""
+						: result.getFailureCode())
+				.append("</failureCode>\n");
 
-            for (TransactionResult result : results) {
+				xml.append("        <failureReason>")
+				.append(result.getFailureReason() == null
+				? ""
+						: result.getFailureReason())
+				.append("</failureReason>\n");
 
-                xml.append("    <Transaction>\n");
+				xml.append("    </Transaction>\n");
+			}
 
-                xml.append("        <transactionId>")
-                   .append(result.getTransactionId())
-                   .append("</transactionId>\n");
+			xml.append("</Response>\n");
+//FileChannel works with bytes, not directly with a String.
+			byte[] data =xml.toString().getBytes(StandardCharsets.UTF_8);
+			//put the existing bytes into a buffer.
+			ByteBuffer buffer = ByteBuffer.wrap(data);
 
-                xml.append("        <status>")
-                   .append(result.getStatus())
-                   .append("</status>\n");
+			try (FileChannel channel = FileChannel.open(responsePath,StandardOpenOption.CREATE,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING)) {
 
-                xml.append("        <failureCode>")
-                   .append(result.getFailureCode() == null
-                           ? ""
-                           : result.getFailureCode())
-                   .append("</failureCode>\n");
+				while (buffer.hasRemaining()) {
+					channel.write(buffer);
+				}
+			}
 
-                xml.append("        <failureReason>")
-                   .append(result.getFailureReason() == null
-                           ? ""
-                           : result.getFailureReason())
-                   .append("</failureReason>\n");
+			return responsePath;
 
-                xml.append("    </Transaction>\n");
-            }
+		} catch (IOException e) {
+			throw new ResponseGenerationException("Failed to generate response file");
+		}
+	}
 
-            xml.append("</Response>\n");
 
-            byte[] data =
-                    xml.toString().getBytes(StandardCharsets.UTF_8);
 
-            ByteBuffer buffer = ByteBuffer.wrap(data);
+	public Path writeSummary(Path outputDirectory,String originalFileName,List<TransactionResult> results)
+					throws ResponseGenerationException {
 
-            try (FileChannel channel = FileChannel.open(
-                    responsePath,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.WRITE,
-                    StandardOpenOption.TRUNCATE_EXISTING)) {
+		int total = results.size();
 
-                while (buffer.hasRemaining()) {
-                    channel.write(buffer);
-                }
-            }
+		int successful = 0;
+		int failed = 0;
 
-            return responsePath;
+		for (TransactionResult result : results) {
 
-        } catch (IOException e) {
-            throw new ResponseGenerationException("Failed to generate response file");
-        }
-    }
-    
-    
-    
-    public Path writeSummary(
-            Path outputDirectory,
-            String originalFileName,
-            List<TransactionResult> results)
-            throws ResponseGenerationException {
+			if ("SUCCESS".equals(result.getStatus())) {
 
-        int total = results.size();
+				successful++;
 
-        int successful = 0;
-        int failed = 0;
+			} else {
 
-        for (TransactionResult result : results) {
+				failed++;
+			}
+		}
 
-            if ("SUCCESS".equals(result.getStatus())) {
+		try {
 
-                successful++;
+			Files.createDirectories(outputDirectory);
 
-            } else {
+			String summaryFileName ="SUMMARY_"+ originalFileName.replace(".xml", ".txt");
+					
+							
 
-                failed++;
-            }
-        }
+			Path summaryPath =
+					outputDirectory.resolve(summaryFileName);
 
-        try {
+			String summary =
+					"File Name: " + originalFileName + "\n" +
+							"Total Transactions: " + total + "\n" +
+							"Successful Transactions: " + successful + "\n" +
+							"Failed Transactions: " + failed + "\n" +
+							"Processing Status: COMPLETED\n";
 
-            Files.createDirectories(outputDirectory);
+			Files.writeString(
+					summaryPath,
+					summary,
+					StandardCharsets.UTF_8,
+					StandardOpenOption.CREATE,
+					StandardOpenOption.TRUNCATE_EXISTING
+					);
 
-            String summaryFileName =
-                    "SUMMARY_"
-                    + originalFileName.replace(".xml", ".txt");
+			return summaryPath;
 
-            Path summaryPath =
-                    outputDirectory.resolve(summaryFileName);
+		} catch (IOException e) {
 
-            String summary =
-                    "File Name: " + originalFileName + "\n" +
-                    "Total Transactions: " + total + "\n" +
-                    "Successful Transactions: " + successful + "\n" +
-                    "Failed Transactions: " + failed + "\n" +
-                    "Processing Status: COMPLETED\n";
+			throw new ResponseGenerationException(
+					"Failed to generate summary file");
+		}
+	}
 
-            Files.writeString(
-                    summaryPath,
-                    summary,
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING
-            );
 
-            return summaryPath;
+	public void displayFileAttributes(Path responsePath) throws ResponseGenerationException {
 
-        } catch (IOException e) {
+		try {
 
-            throw new ResponseGenerationException(
-                    "Failed to generate summary file");
-        }
-    }
-    
-    
-    public void displayFileAttributes(Path responsePath) throws ResponseGenerationException {
+			long size = Files.size(responsePath);
 
-        try {
+			System.out.println(
+					"Response File Size: " + size + " bytes");
 
-            long size = Files.size(responsePath);
+			System.out.println(
+					"Last Modified: " +
+							Files.getLastModifiedTime(responsePath));
 
-            System.out.println(
-                    "Response File Size: " + size + " bytes");
+		} catch (IOException e) {
 
-            System.out.println(
-                    "Last Modified: " +
-                    Files.getLastModifiedTime(responsePath));
-
-        } catch (IOException e) {
-
-            throw new ResponseGenerationException("Unable to read response file attributes");
-        }
-    }
+			throw new ResponseGenerationException("Unable to read response file attributes");
+		}
+	}
 }

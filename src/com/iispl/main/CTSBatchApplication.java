@@ -36,96 +36,56 @@ public class CTSBatchApplication {
                     "============================================================");
 
 
-            // =====================================================
-            // 1. MONITOR INCOMING FOLDER
-            // =====================================================
-
+           //monitoring the incoming folder
             System.out.println("\n1. MONITOR INCOMING FOLDER");
             System.out.println(
                     "------------------------------------------------------------");
-
-            FileIntakeService fileIntakeService =
-                    new FileIntakeService();
-
-            fileIntakeService.createDirectories();
-
-            Path processingFile =
-                    fileIntakeService.processNextFile();
+            FileIntakeService fileIntakeService = new FileIntakeService();
+            fileIntakeService.createDirectories();//creating the required files
+            Path processingFile = fileIntakeService.processNextFile();
 
             if (processingFile == null) {
 
-                System.out.println(
-                        "No valid transaction file found.");
+                System.out.println("No valid transaction file found.");
 
                 return;
             }
 
-            System.out.println(
-                    "Processing file: " + processingFile);
+            System.out.println("Processing file: " + processingFile);
 
 
-            // =====================================================
-            // 2. XML PROCESSING
-            // =====================================================
+         //xml processing
 
             System.out.println("\n2. XML PROCESSING");
             System.out.println(
                     "------------------------------------------------------------");
-
-            XmlReader xmlReader =
-                    new XmlReader();
+            XmlReader xmlReader =new XmlReader();
 
             xmlReader.readXml(processingFile);
 
-            List<TransactionRequest> requests =
-                    xmlReader.getTransactionList();
+            List<TransactionRequest> requests =xmlReader.getTransactionList();
+            List<TransactionResult> xmlFailures =xmlReader.getFailureTransactionList();
 
-            List<TransactionResult> xmlFailures =
-                    xmlReader.getFailureTransactionList();
-
-            System.out.println(
-                    "Total transactions found : "
-                    + (requests.size() + xmlFailures.size()));
-
-            System.out.println(
-                    "Valid transactions       : "
-                    + requests.size());
-
-            System.out.println(
-                    "XML validation failures  : "
-                    + xmlFailures.size());
+            System.out.println("Total transactions found : "+ (requests.size() + xmlFailures.size()));
+            System.out.println("Valid transactions       : "+ requests.size());
+            System.out.println( "XML validation failures  : "+ xmlFailures.size());
 
 
-            // =====================================================
-            // 3. DATABASE UPDATE
-            // =====================================================
+            //database operations
 
             System.out.println("\n3. DATABASE UPDATE");
             System.out.println(
                     "------------------------------------------------------------");
-
             connection = DBUtil.getConnection();
-
+            //disable auto-commit so that multiple related SQL operations can be treated as a single transaction.
+            //If all operations succeed, we call commit; if any operation fails, we call rollback, maintaining database consistency
             connection.setAutoCommit(false);
+            System.out.println( "Database connection established.");
+            AccountDao accountDao =new AccountDAOImpl();
+            TransactionDao transactionDao =new TransactionDAOImpl();
+            TransactionServiceImpl transactionService =new TransactionServiceImpl(accountDao,transactionDao);
 
-            System.out.println(
-                    "Database connection established.");
-
-            AccountDao accountDao =
-                    new AccountDAOImpl();
-
-            TransactionDao transactionDao =
-                    new TransactionDAOImpl();
-
-            TransactionServiceImpl transactionService =
-                    new TransactionServiceImpl(
-                            accountDao,
-                            transactionDao);
-
-            List<TransactionResult> transactionResults =
-                    transactionService.processTransactions(
-                            connection,
-                            requests);
+            List<TransactionResult> transactionResults =transactionService.processTransactions(connection,requests);
 
 
             System.out.println("\nTransaction Results:");
@@ -142,109 +102,66 @@ public class CTSBatchApplication {
                         + " | "
                         + result.getFailureReason());
             }
-
-
-            // =====================================================
-            // COMBINE ALL RESULTS
-            // =====================================================
-
-            List<TransactionResult> allResults =
-                    new ArrayList<>();
-
-            // Member 2 failures
+            List<TransactionResult> allResults = new ArrayList<>();
             allResults.addAll(xmlFailures);
-
-            // Member 3 results
             allResults.addAll(transactionResults);
-
-
-            // Commit database changes
             connection.commit();
 
-            System.out.println(
-                    "\nDatabase update completed successfully.");
+            System.out.println("\nDatabase update completed successfully.");
 
-
-            // =====================================================
-            // 4. RESPONSE FILE GENERATION
-            // =====================================================
-
-            System.out.println(
-                    "\n4. RESPONSE FILE GENERATION");
+//RESPONSE FILE GENERATION
+            System.out.println("\n4. RESPONSE FILE GENERATION");
 
             System.out.println(
                     "------------------------------------------------------------");
+            ResponseFileWriter responseWriter =new ResponseFileWriter();
+            Path outputDirectory =Paths.get("data", "output");
 
-            ResponseFileWriter responseWriter =
-                    new ResponseFileWriter();
+            String originalFileName =processingFile.getFileName().toString();
 
-            Path outputDirectory =
-                    Paths.get("data", "output");
+            Path responseFile =responseWriter.writeResponse(outputDirectory,originalFileName,allResults);
 
-            String originalFileName =
-                    processingFile.getFileName().toString();
-
-            Path responseFile =
-                    responseWriter.writeResponse(
-                            outputDirectory,
-                            originalFileName,
-                            allResults);
-
-            System.out.println(
-                    "Response file created: "
-                            + responseFile);
+            System.out.println("Response file created: "+ responseFile);
 
             responseWriter.displayFileAttributes(
                     responseFile);
 
 
-            // =====================================================
-            // 5. ARCHIVE
-            // =====================================================
+          //MOVING VERIFIED FILE TO ARCHIVE
 
             System.out.println("\n5. ARCHIVE");
             System.out.println(
                     "------------------------------------------------------------");
 
-            Path archiveDirectory =
-                    Paths.get("data", "archive");
-
+            Path archiveDirectory =Paths.get("data", "archive");
             Files.createDirectories(archiveDirectory);
 
-            Path archiveFile =
-                    archiveDirectory.resolve(
-                            processingFile.getFileName());
+            Path archiveFile =archiveDirectory.resolve(processingFile.getFileName());
 
             Files.move(
-                    processingFile,
-                    archiveFile,
-                    StandardCopyOption.REPLACE_EXISTING);
+                    processingFile,archiveFile,StandardCopyOption.REPLACE_EXISTING);
 
             System.out.println(
                     "File archived successfully: "
                             + archiveFile);
 
 
-            // =====================================================
-            // 6. SUMMARY
-            // =====================================================
+           //SUMMARY FILE GENERATION
 
             System.out.println("\n6. SUMMARY");
             System.out.println(
                     "------------------------------------------------------------");
-
-            int total =
-                    allResults.size();
-
+            int total =allResults.size();
             int successful = 0;
             int failed = 0;
+                    
+            
 
-            for (TransactionResult result :
-                    allResults) {
+            for (TransactionResult result :   allResults) 
+                 {
 
-                if ("SUCCESS".equals(
-                        result.getStatus())) {
-
+                if ("SUCCESS".equals(result.getStatus()))
+                         {
                     successful++;
 
                 } else {
@@ -254,20 +171,20 @@ public class CTSBatchApplication {
             }
 
             System.out.println(
-                    "File Name              : "
-                            + originalFileName);
+                    "File Name              : " + originalFileName);
+                           
 
             System.out.println(
-                    "Total Transactions     : "
-                            + total);
+                    "Total Transactions     : " + total);
+                           
 
             System.out.println(
-                    "Successful Transactions: "
-                            + successful);
+                    "Successful Transactions: " + successful);
 
+                           
             System.out.println(
-                    "Failed Transactions    : "
-                            + failed);
+                    "Failed Transactions    : "+ failed);
+                            
 
             System.out.println(
                     "Processing Status      : COMPLETED");
@@ -277,21 +194,11 @@ public class CTSBatchApplication {
             // SUMMARY FILE
             // =====================================================
 
-            Path summaryFile =
-                    responseWriter.writeSummary(
-                            outputDirectory,
-                            originalFileName,
-                            allResults);
-
+            Path summaryFile =responseWriter.writeSummary(outputDirectory,
+                    originalFileName,
+                    allResults);
             System.out.println(
-                    "Summary file created: "
-                            + summaryFile);
-
-
-            // =====================================================
-            // CLOSE CONNECTION
-            // =====================================================
-
+                    "Summary file created: " + summaryFile );
             connection.close();
 
 

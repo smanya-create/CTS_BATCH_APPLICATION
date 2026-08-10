@@ -32,31 +32,21 @@ public class TransactionServiceImpl implements TransactionService {
 		// TODO Auto-generated method stub
 		  results = new ArrayList<>();
 		for(TransactionRequest request : requests) {
-
 		    TransactionResult result;
 
 
 		    try {
 
-		        // 1. Check duplicate transaction
+		        // 1. Checking duplicate transaction
 
-		        boolean exists =
-		                transactionDao.transactionExists(
-		                        connection,
-		                        request.getTransactionId()
-		                );
+		        boolean exists =transactionDao.transactionExists(connection,request.getTransactionId());
 
 
 		        if(exists) {
-
-		            result = new TransactionResult(
-		                    request.getTransactionId(),
-		                    TransactionStatus.FAILED,
-		                    "DUPLICATE",
-		                    "Duplicate transaction ID"
+		        	result = new TransactionResult(request.getTransactionId(),TransactionStatus.FAILED,"DUPLICATE","Duplicate transaction ID"
 		            );
 
-		            results.add(result);
+	            results.add(result);
 		            continue;
 		        }
 
@@ -111,56 +101,30 @@ public class TransactionServiceImpl implements TransactionService {
 		            continue;
 		        }
 
-
-
 		        // 5. Debit source account
 
-		        boolean debit =
-		                accountDao.debitAccount(
-		                        connection,
-		                        request.getFromAccount(),
-		                        request.getAmount()
+		        boolean debit= accountDao.debitAccount( connection,request.getFromAccount(),request.getAmount()
 		                );
 
 
 		        if(!debit) {
 
-		            result = new TransactionResult(
-		                    request.getTransactionId(),
-		                    TransactionStatus.FAILED,
-		                    "INSUFFICIENT_BALANCE",
-		                    "Insufficient balance"
+		            result = new TransactionResult(request.getTransactionId(),TransactionStatus.FAILED,"INSUFFICIENT_BALANCE","Insufficient balance"
 		            );
-
-
 		            results.add(result);
 		            continue;
 		        }
 
-
-
 		        // 6. Credit destination account
 
-		        boolean credit =
-		                accountDao.creditAccount(
-		                        connection,
-		                        request.getToAccount(),
-		                        request.getAmount()
+		        boolean credit = accountDao.creditAccount(connection,request.getToAccount(),request.getAmount()
 		                );
 
-
 		        if(!credit) {
-
 		            connection.rollback();
 
-
-		            result = new TransactionResult(
-		                    request.getTransactionId(),
-		                    TransactionStatus.FAILED,
-		                    "CREDIT_FAILED",
-		                    "Credit operation failed"
+		            result = new TransactionResult(request.getTransactionId(),TransactionStatus.FAILED,"CREDIT_FAILED","Credit operation failed"
 		            );
-
 
 		            results.add(result);
 		            continue;
@@ -170,11 +134,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 		        // 7. Save transaction
 
-		        result = new TransactionResult(
-		                request.getTransactionId(),
-		                TransactionStatus.SUCCESS,
-		                null,
-		                null
+		        result = new TransactionResult(request.getTransactionId(),TransactionStatus.SUCCESS,null,null
 		        );
 
 
@@ -183,8 +143,6 @@ public class TransactionServiceImpl implements TransactionService {
 		                request,
 		                result
 		        );
-
-
 		        connection.setAutoCommit(false);
 
 
